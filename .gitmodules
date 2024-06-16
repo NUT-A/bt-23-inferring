@@ -1,0 +1,3 @@
+[submodule "generation_models/custom_pipelines/InstantID"]
+	path = generation_models/custom_pipelines/InstantID
+	url = https://github.com/InstantID/InstantID.git

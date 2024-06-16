@@ -1,0 +1,5 @@
+{
+  "python.analysis.extraPaths": [
+    "./generation_models/custom_pipelines/InstantID"
+  ]
+}
