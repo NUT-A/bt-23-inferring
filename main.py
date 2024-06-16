@@ -1,7 +1,7 @@
 import ray
 
 runtime_env = {
-    "working_dir": "/home/ray/NicheImage",
+    "working_dir": ".",
     "pip": "requirements.txt"
 }
 
@@ -20,9 +20,8 @@ import asyncio
 from image_generating import ModelDeployment
 
 MODEL_CONFIG = yaml.load(
-    open("generation_models/configs/model_config.yaml"), yaml.FullLoader
+    open("model_config.yaml"), yaml.FullLoader
 )
-
 
 class RequestCancelledMiddleware:
     def __init__(self, app):
