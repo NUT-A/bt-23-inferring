@@ -30,3 +30,5 @@ git+https://github.com/toilaluan/controlnet_aux.git
 insightface
 # onnxruntime-gpu
 # openai
+mediapipe
+protobuf==3.20.3
