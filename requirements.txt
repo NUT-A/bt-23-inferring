@@ -3,7 +3,7 @@
 # msal 
 # pyopenssl
 diffusers
-# transformers==4.40.0
+transformers==4.40.0
 # accelerate==0.27.2
 # cryptography==42.0.0
 # ImageHash==4.3.1
