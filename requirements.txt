@@ -21,12 +21,12 @@ tqdm
 ray[serve]==2.9.3
 fastapi
 torch
-# git+https://github.com/toilaluan/controlnet_aux.git
+git+https://github.com/toilaluan/controlnet_aux.git
 # timm
 # pandas
 # typesense
 # clean-text[gpl]
 # jinja2
-# insightface
+insightface
 # onnxruntime-gpu
 # openai

@@ -2,6 +2,7 @@ import ray
 
 runtime_env = {
     "working_dir": ".",
+    "py_modules": ["generation_models"],
     "pip": "requirements.txt"
 }
 
@@ -20,7 +21,7 @@ import asyncio
 from image_generating import ModelDeployment
 
 MODEL_CONFIG = yaml.load(
-    open("model_config.yaml"), yaml.FullLoader
+    open("generation_models/configs/model_config.yaml"), yaml.FullLoader
 )
 
 class RequestCancelledMiddleware:
