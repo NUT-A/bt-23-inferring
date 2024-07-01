@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  triton:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+      - "8002:8002"
+    volumes:
+      - ./models:/models
+    environment:
+      - MODEL_REPOSITORY=/models
+      - CUDA_VISIBLE_DEVICES=0  # Ensure the GPU is visible
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v2/health/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    command: ["tritonserver", "--model-repository", "/models", "--model-control-mode", "explicit", "--load-model", "animev3"]
