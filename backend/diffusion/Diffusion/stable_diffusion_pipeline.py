@@ -377,6 +377,8 @@ class StableDiffusionPipeline:
                 The number of denoising steps.
                 More denoising steps usually lead to a higher quality image at the expense of slower inference.
         """
+        print(f"[I] Loading engines for {self.stages}")
+
         # Create directories if missing
         for directory in [engine_dir, onnx_dir]:
             if not os.path.exists(directory):
@@ -444,6 +446,11 @@ class StableDiffusionPipeline:
         engine_path = dict(zip(model_names, [self.getEnginePath(model_name, engine_dir, do_engine_refit[model_name], suffix=model_suffix[model_name]) for model_name in model_names]))
         weights_map_path = dict(zip(model_names, [(self.getWeightsMapPath(model_name, onnx_dir) if do_engine_refit[model_name] else None) for model_name in model_names]))
 
+        print(f"[I] onnx_path: {onnx_path}")
+        print(f"[I] onnx_opt_path: {onnx_opt_path}")
+        print(f"[I] engine_path: {engine_path}")
+        print(f"[I] weights_map_path: {weights_map_path}")
+
         for model_name, obj in self.models.items():
             if torch_fallback[model_name]:
                 continue
@@ -495,7 +502,9 @@ class StableDiffusionPipeline:
 
                         print(f"[I] Performing int8 calibration for {calibration_size} steps.")
                         mtq.quantize(model, quant_config, forward_loop=calibration_loop)
+                        print(f"[I] Saving quantized model to {state_dict_path}")
                         mto.save(model, state_dict_path)
+                        print(f"[I] Quantized model saved to {state_dict_path}")
 
                     print(f"[I] Generating quantized ONNX model: {onnx_opt_path[model_name]}")
                     if not os.path.exists(onnx_path[model_name]):
@@ -517,6 +526,7 @@ class StableDiffusionPipeline:
                 print(f"[I] Saving weights map: {weights_map_path[model_name]}")
                 obj.export_weights_map(onnx_opt_path[model_name], weights_map_path[model_name])
 
+        print("[I] Build TensorRT engines")
         # Build TensorRT engines
         for model_name, obj in self.models.items():
             if torch_fallback[model_name]:

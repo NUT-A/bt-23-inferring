@@ -98,12 +98,15 @@ class TritonPythonModel:
 
         self._model_instance_device_id = int(args["model_instance_device_id"])
 
+        print(f"[I] Initializing model with version: {self._version}")
+
         self._pipeline = StableDiffusionPipeline(
             pipeline_type=TritonPythonModel._KNOWN_VERSIONS[self._version],
             max_batch_size=self._batch_size,
             use_cuda_graph=True,
             version=self._version,
             denoising_steps=self._steps,
+            verbose=True,
         )
 
         model_directory = os.path.join(args["model_repository"], args["model_version"])
@@ -132,6 +135,7 @@ class TritonPythonModel:
             opt_image_height=self._image_height,
             opt_image_width=self._image_width,
             static_batch=True,
+            int8=True,
         )
         _, shared_device_memory = cudart.cudaMalloc(
             self._pipeline.calculateMaxDeviceMemory()
