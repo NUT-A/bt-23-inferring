@@ -24,14 +24,54 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-ARG BASE_IMAGE=nvcr.io/nvidia/tritonserver
-ARG BASE_IMAGE_TAG=24.06-py3
+import argparse
+import sys
+import time
 
-FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} as tritonserver-stable-diffusion
+import tritonserver
 
-COPY requirements.txt /workspace/requirements.txt
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", type=str, default="all")
+    parser.add_argument(
+        "--model-repository", type=str, default="/workspace/diffusion-models"
+    )
+    parser.add_argument("--timeout", type=int, default=60 * 20)
 
-RUN pip3 install -r /workspace/requirements.txt
-RUN pip install --pre --upgrade --extra-index-url https://pypi.nvidia.com tensorrt
+    args = parser.parse_args()
 
-RUN pip3 install tritonclient[all]
+    server = tritonserver.Server(
+        model_repository=args.model_repository,
+        model_control_mode=tritonserver.ModelControlMode.EXPLICIT,
+    )
+
+    server.start(wait_until_ready=True)
+    models = server.models()
+
+    if args.model == "all":
+        models = models.keys()
+    else:
+        args.model = (args.model, -1)
+        if not args.model in models:
+            print(f"Model: {args.model} not known")
+            sys.exit(1)
+        models = [args.model]
+
+    for model in models:
+        if model[1] != -1:
+            continue
+        print(f"Loading Model: {model}")
+        model = server.load(model[0])
+        start = time.time()
+        while not model.ready() and ((time.time() - start) <= args.timeout):
+            time.sleep(10)
+
+        if model.ready():
+            print(f"Model: {model} Loaded")
+        else:
+            print(f"Error loading: {model}")
+            sys.exit(1)
+
+        server.unload(model, wait_until_unloaded=True)
+
+    server.stop()

@@ -247,3 +247,20 @@ pyrightconfig.json
 
 models/*/
 .conda
+
+.cache
+
+**/*.onnx
+**/onnx/*.opt
+**/*.bin
+**/*.plan
+**/pytorch_model
+
+# Python Stuff
+**/__pycache__
+
+# Downloaded Assets
+**/downloads
+checkpoints
+backend/diffusion/Diffusion/model
+diffusion-models/stable_diffusion_xl/1/xl-1.0-*

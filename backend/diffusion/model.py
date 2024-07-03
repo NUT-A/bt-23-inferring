@@ -149,9 +149,17 @@ class TritonPythonModel:
         responses = []
         prompts = []
         negative_prompts = []
+        last_seed = 0
         prompts_per_request = []
         image_results = []
         for request in requests:
+            # Int32 type seed. Convert to long
+            last_seed = pb_utils.get_input_tensor_by_name(
+                request, "seed"
+            ).as_numpy()
+
+            last_seed = int(last_seed[0][0])
+
             prompt_tensor = pb_utils.get_input_tensor_by_name(
                 request, "prompt"
             ).as_numpy()
@@ -185,6 +193,7 @@ class TritonPythonModel:
                 negative_prompts[batch : batch + self._batch_size],
                 self._image_height,
                 self._image_width,
+                seed=last_seed,
                 save_image=False,
             )
             images = (

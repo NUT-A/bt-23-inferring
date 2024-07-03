@@ -1,3 +1,4 @@
+#!/bin/bash -e
 # Copyright 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,14 +25,13 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-ARG BASE_IMAGE=nvcr.io/nvidia/tritonserver
-ARG BASE_IMAGE_TAG=24.06-py3
+SOURCE_DIR=$(dirname "$(readlink -f "$0")")
 
-FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} as tritonserver-stable-diffusion
+# install tritonserver in process api
+find /opt/tritonserver/python -maxdepth 1 -type f -name \
+     "tritonserver-*.whl" | xargs -I {} pip3 install --upgrade {}[all]
 
-COPY requirements.txt /workspace/requirements.txt
 
-RUN pip3 install -r /workspace/requirements.txt
-RUN pip install --pre --upgrade --extra-index-url https://pypi.nvidia.com tensorrt
+# Run python script
 
-RUN pip3 install tritonclient[all]
+python3 $SOURCE_DIR/build_models.py "$@"
