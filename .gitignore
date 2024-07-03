@@ -264,3 +264,4 @@ models/*/
 checkpoints
 backend/diffusion/Diffusion/model
 diffusion-models/stable_diffusion_xl/1/xl-1.0-*
+tests

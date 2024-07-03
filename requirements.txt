@@ -20,3 +20,5 @@ Pillow
 torch
 tritonclient[grpc]
 accelerate
+imagehash
+timm

@@ -75,13 +75,13 @@ parameters[
 {
   key: "image_height"
   value: {
-    string_value: "512"
+    string_value: "1024"
   }
 },
 {
   key: "image_width"
   value: {
-    string_value: "512"
+    string_value: "1024"
   }
 },
 {
