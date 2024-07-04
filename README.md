@@ -1,5 +1,6 @@
 # Installation
 
-1. Install driver and reboot
-2. `./install_docker.sh`
-3. Start dev container or compose up
+1. `./update_driver.sh`
+2. reboot
+3. `./install_docker.sh`
+4. Start dev container or compose up
