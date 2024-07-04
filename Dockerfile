@@ -26,6 +26,7 @@
 
 ARG BASE_IMAGE=nvcr.io/nvidia/tritonserver
 ARG BASE_IMAGE_TAG=24.06-py3
+ARG ENVIRONMENT=edge
 
 FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} AS tritonserver-stable-diffusion
 
@@ -45,6 +46,11 @@ ENV PATH /opt/conda/bin:$PATH
 
 # Create conda environment based on environment-vanilla.yml
 RUN conda env create -f /workspace/conda.yml
+
+# Install onnxruntime-gpu if the environment is edge
+RUN if [ "$ENVIRONMENT" = "edge" ]; then \
+    pip install --no-cache-dir onnxruntime-gpu --extra-index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ --force-reinstall; \
+    fi
 
 # Set the Triton conda environment as the default
 RUN echo "conda activate triton" >> ~/.bashrc
