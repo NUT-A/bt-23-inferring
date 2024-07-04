@@ -26,8 +26,26 @@
 
 ARG BASE_IMAGE=nvcr.io/nvidia/tritonserver
 ARG BASE_IMAGE_TAG=24.06-py3
+ARG CONDA_ENV_NAME=environment-vanilla.yml
 
-FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} as tritonserver-stable-diffusion
+FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} AS tritonserver-stable-diffusion
 
-COPY requirements.txt /workspace/requirements.txt
-RUN pip3 install -r /workspace/requirements.txt
+COPY ./environment-vanilla.yml /workspace/conda.yml
+
+# Install Miniconda
+RUN apt-get update && apt-get install -y wget bzip2 && \
+    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
+    /bin/bash /tmp/miniconda.sh -b -p /opt/conda && \
+    rm /tmp/miniconda.sh && \
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+    echo "conda activate base" >> ~/.bashrc
+
+# Update PATH environment variable
+ENV PATH /opt/conda/bin:$PATH
+
+# Create conda environment based on environment-vanilla.yml
+RUN conda env create -f /workspace/conda.yml
+
+# Set the Triton conda environment as the default
+RUN echo "conda activate triton" >> ~/.bashrc

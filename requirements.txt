@@ -17,9 +17,6 @@ nvidia-modelopt==0.11.2
 onnx-graphsurgeon
 polygraphy==0.49.9
 sentencepiece
-Pillow
-torch
-tritonclient[grpc]
 accelerate
 imagehash
 timm
