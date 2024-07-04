@@ -135,7 +135,6 @@ class TritonPythonModel:
             opt_image_height=self._image_height,
             opt_image_width=self._image_width,
             static_batch=True,
-            int8=True,
         )
         _, shared_device_memory = cudart.cudaMalloc(
             self._pipeline.calculateMaxDeviceMemory()

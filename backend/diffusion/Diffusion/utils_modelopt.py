@@ -126,13 +126,15 @@ def quantize_lvl(unet, quant_level=2.5):
                 module.k_bmm_quantizer.enable()
                 module.v_bmm_quantizer.enable()
                 module.softmax_quantizer.enable()
-                module.bmm2_output_quantizer.enable()
+                if hasattr(module, 'bmm2_output_quantizer'):
+                    module.bmm2_output_quantizer.enable()
             else:
                 module.q_bmm_quantizer.disable()
                 module.k_bmm_quantizer.disable()
                 module.v_bmm_quantizer.disable()
                 module.softmax_quantizer.disable()
-                module.bmm2_output_quantizer.disable()
+                if hasattr(module, 'bmm2_output_quantizer'):
+                    module.bmm2_output_quantizer.disable()
 
 def get_int8_config(
     model,

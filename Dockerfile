@@ -26,11 +26,10 @@
 
 ARG BASE_IMAGE=nvcr.io/nvidia/tritonserver
 ARG BASE_IMAGE_TAG=24.06-py3
-ARG CONDA_ENV_NAME=environment-vanilla.yml
 
 FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} AS tritonserver-stable-diffusion
 
-COPY ./environment-vanilla.yml /workspace/conda.yml
+COPY ./environment-edge.yml /workspace/conda.yml
 
 # Install Miniconda
 RUN apt-get update && apt-get install -y wget bzip2 && \
