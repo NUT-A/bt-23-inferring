@@ -1,4 +1,5 @@
-tensorrt
+tensorrt==10.1.0
+tensorrt-cu12==10.1.0
 colored
 controlnet_aux==0.0.6
 cuda-python
@@ -22,3 +23,5 @@ tritonclient[grpc]
 accelerate
 imagehash
 timm
+DeepCache
+tritonclient[all]

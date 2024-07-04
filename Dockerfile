@@ -30,8 +30,4 @@ ARG BASE_IMAGE_TAG=24.06-py3
 FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} as tritonserver-stable-diffusion
 
 COPY requirements.txt /workspace/requirements.txt
-
 RUN pip3 install -r /workspace/requirements.txt
-RUN pip install --pre --upgrade --extra-index-url https://pypi.nvidia.com tensorrt
-
-RUN pip3 install tritonclient[all]

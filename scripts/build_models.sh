@@ -26,12 +26,6 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 SOURCE_DIR=$(dirname "$(readlink -f "$0")")
-
-# install tritonserver in process api
-find /opt/tritonserver/python -maxdepth 1 -type f -name \
-     "tritonserver-*.whl" | xargs -I {} pip3 install --upgrade {}[all]
-
-
 # Run python script
 
 python3 $SOURCE_DIR/build_models.py "$@"
