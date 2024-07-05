@@ -42,18 +42,25 @@ def client(model, request_count, prompt, batch_size, save_image, index):
     start = time.time()
     for i in tqdm(range(request_count), position=index):
         prompts = [prompt] * batch_size
+        seeds = [42] * batch_size
 
         text_obj = np.array(prompts, dtype="object").reshape((-1, 1))
+        seeds_obj = np.array(seeds, dtype=np.int32).reshape((-1, 1))
 
         input_text = httpclient.InferInput(
             "prompt", text_obj.shape, np_to_triton_dtype(text_obj.dtype)
         )
         input_text.set_data_from_numpy(text_obj)
 
+        input_seed = httpclient.InferInput(
+            "seed", seeds_obj.shape, np_to_triton_dtype(seeds_obj.dtype)
+        )
+        input_seed.set_data_from_numpy(seeds_obj)
+
         output_img = httpclient.InferRequestedOutput("generated_image")
         request_start = time.time()
         query_response = client.infer(
-            model_name=model, inputs=[input_text], outputs=[output_img]
+            model_name=model, inputs=[input_text, input_seed], outputs=[output_img]
         )
         latencies.append(time.time() - request_start)
         image = query_response.as_numpy("generated_image")
