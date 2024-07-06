@@ -7,15 +7,17 @@ services:
     # docker-compose.yml file (the first in the devcontainer.json "dockerComposeFile"
     # array). The sample below assumes your primary file is in the root of your project.
     #
-    # build:
-    #   context: .
-    #   dockerfile: .devcontainer/Dockerfile
+    build:
+      context: ./triton-tensorrt
+      environment:
+        - ENVIRONMENT=edge
+      dockerfile: ./triton-tensorrt/Dockerfile
 
     volumes:
       # Update this to wherever you want VS Code to mount the folder of your project
       - ..:/workspaces:cached
       - ./diffusion-models:/diffusion-models
-      - ./.cache/huggingface:/root/.cache/huggingface 
+      - ./.cache/huggingface:/root/.cache/huggingface
       - ./backend/diffusion:/opt/tritonserver/backends/diffusion
 
     # Uncomment the next four lines if you will use a ptrace-based debugger like C++, Go, and Rust.
@@ -24,6 +26,7 @@ services:
     # security_opt:
     #   - seccomp:unconfined
 
+    ports:
+
     # Overrides default command so things don't shut down after the process ends.
     command: /bin/sh -c "while sleep 1000; do :; done"
- 

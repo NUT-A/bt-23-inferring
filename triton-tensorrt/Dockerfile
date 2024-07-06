@@ -30,7 +30,10 @@ ARG ENVIRONMENT=edge
 
 FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} AS tritonserver-stable-diffusion
 
-COPY ./environment-edge.yml /workspace/conda.yml
+COPY ./environment-edge.yml /workspace/conda-edge.yml
+COPY ./environment-vanilla.yml /workspace/conda-vanilla.yml
+
+RUN mv /workspace/conda-${ENVIRONMENT}.yml /workspace/conda.yml
 
 # Install Miniconda
 RUN apt-get update && apt-get install -y wget bzip2 && \
