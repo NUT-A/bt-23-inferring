@@ -122,9 +122,7 @@ dependencies:
   - stack_data=0.6.2=pyhd8ed1ab_0
   - tbb=2021.8.0=hdb19cb5_0
   - tk=8.6.14=h39e8969_0
-  - torchaudio=2.4.0.dev20240704=py310_cu124
   - torchtriton=3.0.0+dedb7bdf33=py310
-  - torchvision=0.20.0.dev20240704=py310_cu124
   - tornado=6.4.1=py310hc51659f_0
   - traitlets=5.14.3=pyhd8ed1ab_0
   - typing_extensions=4.11.0=py310h06a4308_0

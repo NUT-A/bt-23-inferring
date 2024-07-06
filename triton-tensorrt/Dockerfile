@@ -30,10 +30,10 @@ ARG ENVIRONMENT=edge
 
 FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} AS tritonserver-stable-diffusion
 
-COPY ./environment-edge.yml /workspace/conda-edge.yml
-COPY ./environment-vanilla.yml /workspace/conda-vanilla.yml
+ARG ENVIRONMENT
+ENV ENVIRONMENT=${ENVIRONMENT}
 
-RUN mv /workspace/conda-${ENVIRONMENT}.yml /workspace/conda.yml
+COPY ./environment-${ENVIRONMENT}.yml /workspace/conda.yml
 
 # Install Miniconda
 RUN apt-get update && apt-get install -y wget bzip2 && \
@@ -45,7 +45,7 @@ RUN apt-get update && apt-get install -y wget bzip2 && \
     echo "conda activate base" >> ~/.bashrc
 
 # Update PATH environment variable
-ENV PATH /opt/conda/bin:$PATH
+ENV PATH=/opt/conda/bin:$PATH
 
 # Create conda environment based on environment-vanilla.yml
 RUN conda env create -f /workspace/conda.yml
