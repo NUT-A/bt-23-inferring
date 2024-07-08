@@ -267,3 +267,7 @@ triton-tensorrt/checkpoints
 triton-tensorrt/backend/diffusion/Diffusion/model
 triton-tensorrt/diffusion-models/stable_diffusion_xl/1/xl-1.0-*
 triton-tensorrt/tests
+
+# One Flow
+one-flow/checkpoints
+one-flow/tests
