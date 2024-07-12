@@ -273,5 +273,6 @@ one-flow/checkpoints
 one-flow/tests
 
 # Server
+server/checkpoints
 server/src/checkpoints
 server/src/tests

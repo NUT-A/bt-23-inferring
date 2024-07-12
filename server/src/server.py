@@ -59,4 +59,4 @@ if __name__ == "__main__":
     print_stats()
     model.preheat_model()
     
-    uvicorn.run(app, host="0.0.0.0", port=3000, timeout_keep_alive=12, limit_max_requests=1000)
+    uvicorn.run(app, host="0.0.0.0", port=3000, timeout_keep_alive=12)
