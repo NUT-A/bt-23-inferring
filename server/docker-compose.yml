@@ -10,5 +10,12 @@ services:
         reservations:
           devices:
             - capabilities: [ gpu ]
+    ports:
+      - 3000:3000
     volumes:
       - ./:/workspace
+    command:
+      [
+        "/root/.pyenv/versions/3.10.14/bin/python",
+        "/workspace/src/server.py"
+      ]
