@@ -271,3 +271,7 @@ triton-tensorrt/tests
 # One Flow
 one-flow/checkpoints
 one-flow/tests
+
+# Server
+server/src/checkpoints
+server/src/tests
