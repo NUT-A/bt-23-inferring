@@ -7,11 +7,6 @@ services:
     # docker-compose.yml file (the first in the devcontainer.json "dockerComposeFile"
     # array). The sample below assumes your primary file is in the root of your project.
     #
-    build:
-      context: ../triton-tensorrt
-      environment:
-        - ENVIRONMENT=vanilla
-      dockerfile: Dockerfile
 
     # Uncomment the next four lines if you will use a ptrace-based debugger like C++, Go, and Rust.
     # cap_add:

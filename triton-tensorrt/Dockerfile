@@ -26,7 +26,7 @@
 
 ARG BASE_IMAGE=nvcr.io/nvidia/tritonserver
 ARG BASE_IMAGE_TAG=24.06-py3
-ARG ENVIRONMENT=edge
+ARG ENVIRONMENT=vanilla
 
 FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} AS tritonserver-stable-diffusion
 

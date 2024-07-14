@@ -31,4 +31,6 @@ RUN pip install -r requirements.txt
 RUN python -m pip install -U --pre oneflow -f https://github.com/siliconflow/oneflow_releases/releases/expanded_assets/community_cu121
 RUN python -m pip install --pre onediff
 
+COPY src src
+
 EXPOSE 3000
