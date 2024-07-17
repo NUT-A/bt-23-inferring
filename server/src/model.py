@@ -21,8 +21,8 @@ class GenerateRequest(BaseModel):
     seed: int
     pipeline_params: PipelineParams
     timeout: float
-    model_name: str = "AnimeV3"
-    pipeline_type: str = "txt2img"
+    model_name: str
+    pipeline_type: str
 
 class AnimeModel:
     def __init__(self, model_path="checkpoints/AnimeV3.safetensors"):

@@ -10,8 +10,22 @@ from print_info import print_stats
 from PIL import Image
 import io
 
+import logging
+
+class EndpointFilter(logging.Filter):
+    def __init__(self, path: str):
+        super().__init__()
+        self.path = path
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        return record.getMessage().find(self.path) == -1
+
 model = AnimeModel()
 app = FastAPI()
+
+# Apply the filter to the Uvicorn access logger
+uvicorn_access_logger = logging.getLogger("uvicorn.access")
+uvicorn_access_logger.addFilter(EndpointFilter("/healthcheck"))
 
 # Create a semaphore to limit concurrency
 semaphore = asyncio.Semaphore(1)
@@ -27,6 +41,9 @@ def pil_image_to_base64(image: Image.Image, format="JPEG") -> str:
 
 @app.post("/generate_anime")
 async def generate(request: GenerateRequest):
+    if request.model_name != "AnimeV3":
+        raise HTTPException(status_code=400, detail="Model name must be AnimeV3")
+    
     request_time = time.time()
     
     # Define a function to perform the inference
